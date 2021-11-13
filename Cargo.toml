@@ -1,7 +1,9 @@
 [package]
 name = "google-dns-rs"
+description = "google-dns-rs is a third party Google DNS client for rust"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
 authors = ["Eduardo Stuart <e@s.tuart.me>"]
 license = "MIT"
 keywords = ["doh", "dns-over-https", "google-dns", "dns"]
