@@ -2,6 +2,7 @@
 
 [![Crates.io](https://img.shields.io/crates/v/google-dns-rs.svg)](https://crates.io/crates/google-dns-rs)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Rust](https://github.com/eduardostuart/google-dns-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/eduardostuart/google-dns-rs/actions/workflows/ci.yml)
 
 ---
 
