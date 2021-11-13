@@ -1,6 +1,12 @@
 # google-dns-rs
 
+## Install
 
+Add the following line to your Cargo.toml file:
+
+```toml
+google-dns-rs = "0.1.0"
+```
 
 ## Usage
 
