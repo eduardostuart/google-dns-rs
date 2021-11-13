@@ -1,5 +1,8 @@
 # google-dns-rs
 
+- [Crates](https://crates.io/crates/google-dns-rs)
+- [Documentation](https://docs.rs/google-dns-rs/0.2.0/google_dns_rs/)
+
 ## Install
 
 Add the following line to your Cargo.toml file:
