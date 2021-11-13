@@ -13,4 +13,4 @@ repository = "https://github.com/eduardostuart/google-dns-rs"
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-ureq = { version = "*", features = ["json", "charset", "tls"] }
+ureq = { version = "2.1.1", features = ["json", "charset", "tls"] }
