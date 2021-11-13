@@ -55,7 +55,10 @@ pub struct Dns {
 }
 
 #[derive(Debug, Clone)]
-pub struct DoH {
+pub struct DoH<'a> {
+    // Google DNS api base URL
+    base_url: &'a str,
+
     pub name: String,
     /// RR type
     /// default = 1
@@ -80,9 +83,10 @@ pub struct DoH {
     pub edns_client_subnet: Option<String>,
 }
 
-impl DoH {
+impl<'a> DoH<'a> {
     pub fn new(name: String) -> Self {
         DoH {
+            base_url: GOOGLEDNS_BASE_URL,
             name,
             r#type: None,
             cd: None,
@@ -90,6 +94,11 @@ impl DoH {
             r#do: None,
             edns_client_subnet: None,
         }
+    }
+
+    pub fn set_base_url(mut self, value: &'a str) -> Self {
+        self.base_url = value;
+        self
     }
 
     /// Sets the desired content type
@@ -123,14 +132,9 @@ impl DoH {
     }
 
     pub async fn resolve(&self) -> Result<Dns> {
-        Ok(ureq::get(&self.build_url()).call()?.into_json()?)
-    }
-
-    pub(self) fn build_url(&self) -> String {
-        // Is there a better way to do this? :)
-        format!(
+        let url = format!(
             "{}/resolve?name={name}{cd}{ct}{edns_client_subnet}{type}",
-            GOOGLEDNS_BASE_URL,
+            &self.base_url,
             name = &self.name,
             r#type = match &self.r#type {
                 Some(v) => format!("&type={}", v),
@@ -148,6 +152,59 @@ impl DoH {
                 Some(v) => format!("&edns_client_subnet={}", v),
                 None => "".to_string(),
             }
-        )
+        );
+
+        Ok(ureq::get(&url).call()?.into_json()?)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use serde_json::Value;
+    use wiremock::{
+        matchers::{method, path},
+        Mock, MockServer, ResponseTemplate,
+    };
+
+    use super::*;
+
+    async fn setup_mock_api(response: ResponseTemplate) -> MockServer {
+        let server = MockServer::start().await;
+        Mock::given(method("GET"))
+            .and(path("/resolve"))
+            .respond_with(response)
+            .mount(&server)
+            .await;
+        server
+    }
+
+    #[async_std::test]
+    async fn should_return_dns_information() {
+        let body: Value = serde_json::from_str(include_str!("../samples/google_A.json")).unwrap();
+        let template = ResponseTemplate::new(200).set_body_json(body);
+        let server = setup_mock_api(template).await;
+        let result = DoH::new("google.com".to_string())
+            .set_base_url(&server.uri())
+            .resolve()
+            .await
+            .unwrap();
+
+        assert_eq!(result.status, 0);
+        assert_eq!(result.tc, false);
+        assert_eq!(result.ad, false);
+        assert_eq!(result.cd, false);
+        assert_eq!(
+            result.comment,
+            Some("Response from 2001:4860:4802:32::a.".to_string())
+        );
+
+        let answer = result.answer.unwrap().into_iter().nth(0).unwrap();
+        assert_eq!(answer.r#type, 1);
+        assert_eq!(answer.ttl, 300);
+        assert_eq!(answer.data, "216.58.208.110".to_string());
+
+        let question = result.question.into_iter().nth(0).unwrap();
+        assert_eq!(question.r#type, 1);
+        assert_eq!(question.name, "google.com.");
     }
 }
