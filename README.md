@@ -5,14 +5,14 @@
 
 ---
 
-[Documentation](https://docs.rs/google-dns-rs/0.2.0/google_dns_rs/)
+[Documentation](https://docs.rs/google-dns-rs/0.3.0/google_dns_rs/)
 
 ## Install
 
 Add the following line to your Cargo.toml file:
 
 ```toml
-google-dns-rs = "0.2.0"
+google-dns-rs = "0.3.0"
 ```
 
 ## Usage
