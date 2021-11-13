@@ -26,4 +26,4 @@ async fn github_dns_records() -> Result<Dns> {
 
 ## License
 
-MIT
+[MIT](./LICENSE)
