@@ -1,6 +1,11 @@
 # google-dns-rs
 
-[Crates](https://crates.io/crates/google-dns-rs) | [Documentation](https://docs.rs/google-dns-rs/0.2.0/google_dns_rs/)
+[![Crates.io](https://img.shields.io/crates/v/google-dns-rs.svg)](https://crates.io/crates/google-dns-rs)
+[![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
+---
+
+[Documentation](https://docs.rs/google-dns-rs/0.2.0/google_dns_rs/)
 
 ## Install
 
