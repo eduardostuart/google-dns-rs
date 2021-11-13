@@ -5,7 +5,7 @@
 Add the following line to your Cargo.toml file:
 
 ```toml
-google-dns-rs = "0.1.0"
+google-dns-rs = "0.2.0"
 ```
 
 ## Usage
