@@ -1,6 +1,7 @@
 # google-dns-rs
 
 **google-dns-rs is a third party Google DNS client for rust.**
+
 ---
 
 
